@@ -2,34 +2,62 @@
   "uid": "isi-tp1-vuln",
   "title": "TP1 ISI — Gestão de Vulnerabilidades",
   "description": "Scans Trivy a 6 imagens Docker antigas, enriquecidos com CISA KEV, EPSS e MITRE CWE. Risco = 50% CVSS + 30% EPSS + 20% KEV.",
-  "tags": ["isi", "tp1", "vulnerabilidades"],
+  "tags": [
+    "isi",
+    "tp1",
+    "vulnerabilidades"
+  ],
   "timezone": "browser",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "refresh": "",
   "editable": true,
-  "time": { "from": "now-6h", "to": "now" },
-  "templating": { "list": [] },
-  "annotations": { "list": [] },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  },
   "panels": [
     {
       "id": 1,
       "type": "stat",
       "title": "Ocorrências de vulnerabilidade",
       "description": "Uma linha por imagem x target x pacote x CVE. Esperado: 2642.",
-      "datasource": { "type": "postgres", "uid": "isi-postgres" },
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "isi-postgres"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "isi-postgres" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "isi-postgres"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "SELECT count(*) AS valor FROM fact_vulnerabilidade;"
         }
       ],
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "orientation": "auto",
         "textMode": "auto",
         "colorMode": "background",
@@ -38,7 +66,10 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "fixed", "fixedColor": "blue" },
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
           "mappings": [],
           "unit": "short"
         },
@@ -50,19 +81,36 @@
       "type": "stat",
       "title": "Vulnerabilidades distintas",
       "description": "Identificadores únicos (CVE, GHSA, DLA, DSA). Esperado: 679.",
-      "datasource": { "type": "postgres", "uid": "isi-postgres" },
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "isi-postgres"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "isi-postgres" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "isi-postgres"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "SELECT count(*) AS valor FROM dim_cve;"
         }
       ],
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "orientation": "auto",
         "textMode": "auto",
         "colorMode": "background",
@@ -71,7 +119,10 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "fixed", "fixedColor": "purple" },
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
           "mappings": [],
           "unit": "short"
         },
@@ -83,19 +134,36 @@
       "type": "stat",
       "title": "Exploração confirmada (KEV)",
       "description": "CVE no catálogo CISA Known Exploited Vulnerabilities. Esperado: 5.",
-      "datasource": { "type": "postgres", "uid": "isi-postgres" },
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "isi-postgres"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "isi-postgres" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "isi-postgres"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "SELECT count(*) AS valor FROM dim_cve WHERE em_kev;"
         }
       ],
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "orientation": "auto",
         "textMode": "auto",
         "colorMode": "background",
@@ -104,14 +172,22 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "unit": "short",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 1 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
             ]
           }
         },
@@ -123,19 +199,36 @@
       "type": "stat",
       "title": "Sem correção disponível",
       "description": "Ocorrências com fixed_version a NULL. Esperado: 436.",
-      "datasource": { "type": "postgres", "uid": "isi-postgres" },
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "isi-postgres"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "isi-postgres" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "isi-postgres"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "SELECT count(*) AS valor FROM fact_vulnerabilidade WHERE fixed_version IS NULL;"
         }
       ],
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "orientation": "auto",
         "textMode": "auto",
         "colorMode": "background",
@@ -144,7 +237,10 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "fixed", "fixedColor": "orange" },
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          },
           "mappings": [],
           "unit": "short"
         },
@@ -156,15 +252,26 @@
       "type": "barchart",
       "title": "Vulnerabilidades por imagem e prioridade",
       "description": "Prioridade não é severidade: uma CVE no KEV é sempre crítica, por mais baixo que seja o CVSS.",
-      "datasource": { "type": "postgres", "uid": "isi-postgres" },
-      "gridPos": { "h": 11, "w": 14, "x": 0, "y": 4 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "isi-postgres"
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 14,
+        "x": 0,
+        "y": 4
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "isi-postgres" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "isi-postgres"
+          },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT imagem, COALESCE(SUM(n_vulnerabilidades) FILTER (WHERE prioridade LIKE 'Critica%'), 0) AS \"Critica\", COALESCE(SUM(n_vulnerabilidades) FILTER (WHERE prioridade = 'Alta'), 0) AS \"Alta\", COALESCE(SUM(n_vulnerabilidades) FILTER (WHERE prioridade = 'Media'), 0) AS \"Media\", COALESCE(SUM(n_vulnerabilidades) FILTER (WHERE prioridade = 'Baixa'), 0) AS \"Baixa\" FROM vw_vuln_por_imagem GROUP BY imagem ORDER BY imagem;"
+          "rawSql": "SELECT imagem, COALESCE(SUM(n_vulnerabilidades) FILTER (WHERE prioridade = 'Crítica'), 0) AS \"Crítica\", COALESCE(SUM(n_vulnerabilidades) FILTER (WHERE prioridade = 'Alta'), 0) AS \"Alta\", COALESCE(SUM(n_vulnerabilidades) FILTER (WHERE prioridade = 'Média'), 0) AS \"Média\", COALESCE(SUM(n_vulnerabilidades) FILTER (WHERE prioridade = 'Baixa'), 0) AS \"Baixa\" FROM vw_vuln_por_imagem GROUP BY imagem ORDER BY imagem;"
         }
       ],
       "options": {
@@ -175,20 +282,91 @@
         "groupWidth": 0.7,
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0,
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true, "calcs": [] },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": []
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "axisPlacement": "auto", "fillOpacity": 85, "lineWidth": 1, "gradientMode": "none" },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "lineWidth": 1,
+            "gradientMode": "none"
+          },
           "mappings": []
         },
         "overrides": [
-          { "matcher": { "id": "byName", "options": "Critica" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "dark-red" } } ] },
-          { "matcher": { "id": "byName", "options": "Alta" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } } ] },
-          { "matcher": { "id": "byName", "options": "Media" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "yellow" } } ] },
-          { "matcher": { "id": "byName", "options": "Baixa" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } } ] }
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Crítica"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "dark-red"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Alta"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Média"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "yellow"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Baixa"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "green"
+                }
+              }
+            ]
+          }
         ]
       }
     },
@@ -197,32 +375,136 @@
       "type": "piechart",
       "title": "Distribuição por severidade",
       "description": "Severidade atribuída pelo Trivy nas 2642 ocorrências.",
-      "datasource": { "type": "postgres", "uid": "isi-postgres" },
-      "gridPos": { "h": 11, "w": 10, "x": 14, "y": 4 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "isi-postgres"
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 10,
+        "x": 14,
+        "y": 4
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "isi-postgres" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "isi-postgres"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "SELECT severidade, n_total FROM vw_distribuicao_severidade ORDER BY n_total DESC;"
         }
       ],
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": true },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
         "pieType": "donut",
-        "displayLabels": ["percent"],
-        "legend": { "displayMode": "table", "placement": "right", "showLegend": true, "values": ["value"] },
-        "tooltip": { "mode": "single", "sort": "none" }
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "mappings": [] },
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
         "overrides": [
-          { "matcher": { "id": "byName", "options": "CRITICAL" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "dark-red" } } ] },
-          { "matcher": { "id": "byName", "options": "HIGH" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } } ] },
-          { "matcher": { "id": "byName", "options": "MEDIUM" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "yellow" } } ] },
-          { "matcher": { "id": "byName", "options": "LOW" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } } ] },
-          { "matcher": { "id": "byName", "options": "UNKNOWN" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "text" } } ] }
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CRITICAL"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "dark-red"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "HIGH"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEDIUM"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "yellow"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "LOW"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "green"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "UNKNOWN"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "text"
+                }
+              }
+            ]
+          }
         ]
       }
     },
@@ -231,54 +513,166 @@
       "type": "table",
       "title": "Top 10 por risco — o que corrigir primeiro",
       "description": "Agregado por CVE, não por ocorrência. A coluna Imagens mostra o alcance.",
-      "datasource": { "type": "postgres", "uid": "isi-postgres" },
-      "gridPos": { "h": 11, "w": 24, "x": 0, "y": 15 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "isi-postgres"
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "isi-postgres" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "isi-postgres"
+          },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT cve_id AS \"CVE\", titulo AS \"Titulo\", risco AS \"Risco\", cvss_v3 AS \"CVSS v3\", epss AS \"EPSS\", em_kev AS \"KEV\", n_imagens AS \"Imagens\", ocorrencias_sem_correcao AS \"Sem correcao\" FROM vw_top_risco;"
+          "rawSql": "SELECT cve_id AS \"CVE\", titulo AS \"Titulo\", risco AS \"Risco\", prioridade AS \"Prioridade\", cvss_v3 AS \"CVSS v3\", epss AS \"EPSS\", em_kev AS \"KEV\", n_imagens AS \"Imagens\", ocorrencias_sem_correcao AS \"Sem correcao\" FROM vw_top_risco;"
         }
       ],
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false, "reducer": ["sum"], "countRows": false, "fields": "" },
-        "sortBy": [ { "displayName": "Risco", "desc": true } ]
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        },
+        "sortBy": [
+          {
+            "displayName": "Risco",
+            "desc": true
+          }
+        ]
       },
       "fieldConfig": {
         "defaults": {
-          "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
           "mappings": []
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "Risco" },
+            "matcher": {
+              "id": "byName",
+              "options": "Risco"
+            },
             "properties": [
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } },
-              { "id": "thresholds", "value": { "mode": "absolute", "steps": [
-                  { "color": "green", "value": null },
-                  { "color": "yellow", "value": 4 },
-                  { "color": "orange", "value": 6 },
-                  { "color": "red", "value": 8 }
-              ] } },
-              { "id": "custom.width", "value": 90 }
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 20
+                    },
+                    {
+                      "color": "orange",
+                      "value": 35
+                    },
+                    {
+                      "color": "red",
+                      "value": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "KEV" },
+            "matcher": {
+              "id": "byName",
+              "options": "KEV"
+            },
             "properties": [
-              { "id": "custom.cellOptions", "value": { "type": "color-text" } },
-              { "id": "mappings", "value": [
-                { "type": "value", "options": { "true": { "text": "SIM", "color": "red", "index": 0 }, "false": { "text": "—", "color": "text", "index": 1 } } }
-              ] },
-              { "id": "custom.width", "value": 70 }
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "true": {
+                        "text": "SIM",
+                        "color": "red",
+                        "index": 0
+                      },
+                      "false": {
+                        "text": "—",
+                        "color": "text",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 70
+              }
             ]
           },
-          { "matcher": { "id": "byName", "options": "EPSS" }, "properties": [ { "id": "unit", "value": "percentunit" }, { "id": "decimals", "value": 2 } ] },
-          { "matcher": { "id": "byName", "options": "CVE" }, "properties": [ { "id": "custom.width", "value": 170 } ] }
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "EPSS"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CVE"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 170
+              }
+            ]
+          }
         ]
       }
     },
@@ -287,12 +681,23 @@
       "type": "table",
       "title": "CVE com exploração confirmada no mundo real (CISA KEV)",
       "description": "As que têm de ser corrigidas primeiro, sem discussão. Esperadas: 5.",
-      "datasource": { "type": "postgres", "uid": "isi-postgres" },
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 26 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "isi-postgres"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "isi-postgres" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "isi-postgres"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "SELECT cve_id AS \"CVE\", titulo AS \"Titulo\", kev_fornecedor AS \"Fornecedor\", kev_data_adicao AS \"Adicionada ao KEV\", kev_prazo AS \"Prazo CISA\", prazo_expirado AS \"Prazo expirado\", kev_ransomware AS \"Ransomware\", risco AS \"Risco\", n_imagens AS \"Imagens\" FROM vw_kev_criticas;"
@@ -301,50 +706,168 @@
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false, "reducer": ["sum"], "countRows": false, "fields": "" },
-        "sortBy": [ { "displayName": "Risco", "desc": true } ]
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        },
+        "sortBy": [
+          {
+            "displayName": "Risco",
+            "desc": true
+          }
+        ]
       },
       "fieldConfig": {
         "defaults": {
-          "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
           "mappings": []
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "Adicionada ao KEV" },
-            "properties": [ { "id": "unit", "value": "time:YYYY-MM-DD" }, { "id": "custom.width", "value": 150 } ]
-          },
-          {
-            "matcher": { "id": "byName", "options": "Prazo CISA" },
-            "properties": [ { "id": "unit", "value": "time:YYYY-MM-DD" }, { "id": "custom.width", "value": 120 } ]
-          },
-          {
-            "matcher": { "id": "byName", "options": "Prazo expirado" },
+            "matcher": {
+              "id": "byName",
+              "options": "Adicionada ao KEV"
+            },
             "properties": [
-              { "id": "custom.cellOptions", "value": { "type": "color-text" } },
-              { "id": "mappings", "value": [
-                { "type": "value", "options": { "true": { "text": "EXPIRADO", "color": "red", "index": 0 }, "false": { "text": "dentro do prazo", "color": "green", "index": 1 } } }
-              ] }
+              {
+                "id": "unit",
+                "value": "time:YYYY-MM-DD"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Risco" },
+            "matcher": {
+              "id": "byName",
+              "options": "Prazo CISA"
+            },
             "properties": [
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } },
-              { "id": "thresholds", "value": { "mode": "absolute", "steps": [
-                  { "color": "green", "value": null },
-                  { "color": "yellow", "value": 4 },
-                  { "color": "orange", "value": 6 },
-                  { "color": "red", "value": 8 }
-              ] } },
-              { "id": "custom.width", "value": 90 }
+              {
+                "id": "unit",
+                "value": "time:YYYY-MM-DD"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Ransomware" },
-            "properties": [ { "id": "mappings", "value": [
-              { "type": "value", "options": { "Known": { "text": "Conhecido", "color": "red", "index": 0 }, "Unknown": { "text": "Desconhecido", "color": "text", "index": 1 } } }
-            ] } ]
+            "matcher": {
+              "id": "byName",
+              "options": "Prazo expirado"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "true": {
+                        "text": "EXPIRADO",
+                        "color": "red",
+                        "index": 0
+                      },
+                      "false": {
+                        "text": "dentro do prazo",
+                        "color": "green",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Risco"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 20
+                    },
+                    {
+                      "color": "orange",
+                      "value": 35
+                    },
+                    {
+                      "color": "red",
+                      "value": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ransomware"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "Known": {
+                        "text": "Conhecido",
+                        "color": "red",
+                        "index": 0
+                      },
+                      "Unknown": {
+                        "text": "Desconhecido",
+                        "color": "text",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
