@@ -1,0 +1,64 @@
+# ---------------------------------------------------------------
+# TP1 ISI — ficheiros que NÃO devem ir para o repositório
+# ---------------------------------------------------------------
+
+# Credenciais e configuração local (ver .env.example)
+.env
+.env.local
+config/*.local.*
+config/credentials*
+
+# ---- Dados grandes / regeneráveis por download ----
+# EPSS: CSV diário, ~11 MB descomprimido. Reobtém-se em
+# https://epss.empiricalsecurity.com/epss_scores-current.csv.gz
+dados/epss/*
+
+# MITRE CWE: XML ~17 MB. Reobtém-se em
+# https://cwe.mitre.org/data/xml/cwec_latest.xml.zip
+dados/cwe/*
+
+# Comprimidos em qualquer pasta
+*.gz
+*.zip
+*.tar
+*.tgz
+*.7z
+*.rar
+
+# Manter a estrutura de pastas vazia no git
+!dados/epss/.gitkeep
+!dados/cwe/.gitkeep
+
+# ---- Saídas intermédias do ETL ----
+saidas/
+output/
+*.tmp
+
+# ---- Docker ----
+# Os dados do contentor ficam em volume nomeado (isi-tp1-pgdata), fora da
+# pasta do projeto. Estas entradas cobrem o caso de passares a bind mount.
+pgdata/
+docker-compose.override.yml
+
+# ---- KNIME ----
+# Workflows versionam-se exportados (.knwf); a pasta de trabalho não.
+knime/**/.artifacts/
+knime/**/tmp/
+knime/**/.metadata/
+knime/**/*.lock
+knime/**/workflow_variables.xml
+
+# ---- Windows / editores ----
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# ---- Fora do repositorio por opcao (ficam no disco) ----
+# KEV: o workflow usa o feed ao vivo da CISA, o ficheiro local e redundante
+dados/kev/
+# Documentacao de trabalho e validacao: material de apoio, nao necessario
+# para executar o projeto
+docs/
+sql/validacao.sql

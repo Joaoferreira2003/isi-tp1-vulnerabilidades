@@ -1,0 +1,113 @@
+# ===============================================================
+# TP1 ISI — serviços de apoio
+#
+# ARQUITETURA, em duas linhas:
+#   Os DADOS vivem no PostgreSQL 18 NATIVO do Windows (localhost:5432).
+#   É lá que o KNIME escreve, e é lá que o Grafana vai ler.
+#
+# Por isso o Grafana liga-se a host.docker.internal:5432 e NÃO ao
+# contentor de base de dados — esse existe só como anexo de
+# reprodutibilidade e está vazio.
+#
+# ---------------------------------------------------------------
+# Arrancar o dashboard:      docker compose up -d
+#                            -> http://localhost:3000
+# Parar:                     docker compose down
+#
+# Arrancar também a base em contentor (opcional, raramente preciso):
+#                            docker compose --profile db up -d
+# ===============================================================
+
+services:
+
+  # -------------------------------------------------------------
+  # Grafana — dashboard sobre as vistas do PostgreSQL nativo.
+  # A fonte de dados e o dashboard são provisionados por ficheiro
+  # (grafana/provisioning/), não configurados à mão na interface:
+  # assim ficam versionados no Git e são reproduzíveis.
+  # -------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:11.3.0
+    container_name: isi-tp1-grafana
+    restart: unless-stopped
+
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_LOG_LEVEL: info
+      TZ: Europe/Lisbon
+      # Credenciais lidas pelo ficheiro de provisionamento da fonte de
+      # dados. Ficam aqui e não no YAML do Grafana, para o .env continuar
+      # a ser o único sítio com segredos (e continuar fora do Git).
+      # host.docker.internal = o PostgreSQL nativo do Windows.
+      # No Railway estas mesmas variáveis apontam para o PostgreSQL gerido.
+      PG_HOST: host.docker.internal
+      PG_PORT: "5432"
+      PG_SSLMODE: disable
+      PG_DATABASE: ${PG_DATABASE:-isi_tp1}
+      PG_USER: ${PG_USER:-postgres}
+      PG_PASSWORD: ${PG_PASSWORD:?define PG_PASSWORD no .env}
+
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+
+    # Necessário para o contentor alcançar o PostgreSQL do Windows.
+    # No Docker Desktop host.docker.internal já existe; esta linha
+    # garante o mesmo comportamento noutras instalações.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # -------------------------------------------------------------
+  # PostgreSQL em contentor — ANEXO DE REPRODUTIBILIDADE.
+  # Está atrás do perfil "db", por isso NÃO arranca com um
+  # 'docker compose up -d' normal. Porta 5433 para não colidir com a
+  # instalação nativa, que ocupa a 5432.
+  # -------------------------------------------------------------
+  postgres:
+    image: postgres:18
+    container_name: isi-tp1-postgres
+    restart: unless-stopped
+    profiles: ["db"]
+
+    environment:
+      POSTGRES_DB: ${PGD_DATABASE:-isi_tp1}
+      POSTGRES_USER: ${PGD_USER:-isi}
+      POSTGRES_PASSWORD: ${PGD_PASSWORD:-isi_tp1_dev}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+      TZ: Europe/Lisbon
+
+    ports:
+      - "${PGD_PORT:-5433}:5432"
+
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Mesmo esquema que corres à mão no DBeaver: uma só fonte de verdade.
+      - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./sql/vistas_dashboard.sql:/docker-entrypoint-initdb.d/02_vistas.sql:ro
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PGD_USER:-isi} -d ${PGD_DATABASE:-isi_tp1}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  grafana-data:
+    name: isi-tp1-grafana-data
+  pgdata:
+    name: isi-tp1-pgdata

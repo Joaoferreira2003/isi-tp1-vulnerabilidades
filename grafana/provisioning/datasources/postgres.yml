@@ -1,0 +1,30 @@
+# ===============================================================
+# Fonte de dados do Grafana -> PostgreSQL do TP1
+#
+# O host vem de variável de ambiente para o mesmo ficheiro servir os
+# dois cenários:
+#   local    -> host.docker.internal:5432  (PostgreSQL nativo do Windows)
+#   Railway  -> <host>.railway.app:<porta> (PostgreSQL gerido)
+#
+# As credenciais nunca ficam escritas aqui: este ficheiro vai para o Git.
+# ===============================================================
+apiVersion: 1
+
+datasources:
+  - name: PostgreSQL ISI
+    uid: isi-postgres
+    type: postgres
+    access: proxy
+    url: ${PG_HOST}:${PG_PORT}
+    database: ${PG_DATABASE}
+    user: ${PG_USER}
+    secureJsonData:
+      password: ${PG_PASSWORD}
+    jsonData:
+      # 'disable' em local, 'require' no Railway (ver variáveis do serviço)
+      sslmode: ${PG_SSLMODE}
+      maxOpenConns: 10
+      maxIdleConns: 2
+      connMaxLifetime: 14400
+    isDefault: true
+    editable: true
