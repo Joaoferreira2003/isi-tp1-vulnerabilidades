@@ -1,4 +1,4 @@
-# TP1 — Integração de Sistemas de Informação
+﻿# TP1 — Integração de Sistemas de Informação
 
 Processo **ETL em KNIME** para gestão de vulnerabilidades de contentores.
 
@@ -168,9 +168,7 @@ saidas/          exportações geradas
 
 O dashboard corre localmente em `http://localhost:3000` após `docker compose up -d`.
 
-![Indicadores e distribuição](imagens/dashboard-1.png)
-
-![Top 10 por risco e CVE no KEV](imagens/dashboard-2.png)
+![Dashboard de gestão de vulnerabilidades](imagens/dashboard.png)
 
 ### Principais resultados
 
@@ -183,3 +181,12 @@ O dashboard corre localmente em `http://localhost:3000` após `docker compose up
 A ordenação por risco difere da ordenação por CVSS: a **CVE-2021-3711** tem CVSS 9,8
 — superior ao de quatro das cinco CVE do KEV — mas fica em 6.º lugar por não estar
 a ser explorada. É esta diferença que justifica o modelo de priorização.
+
+---
+
+## Demonstração
+
+Vídeo com a demonstração do processo completo — leitura das fontes,
+transformações, carregamento e dashboard:
+
+<img src="imagens/qrcode-video.png" alt="QR Code para o vídeo de demonstração" width="200">
